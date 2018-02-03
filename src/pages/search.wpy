@@ -1,0 +1,16 @@
+<template>
+  <view>
+    search
+  </view>
+</template>
+<style lang="less">
+
+</style>
+<script>
+  import wepy from 'wepy'
+  export default class Search extends wepy.page{
+    config = {
+      navigationBarTitleText: 'MyReader'
+    }
+  }
+</script>

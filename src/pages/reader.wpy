@@ -1,0 +1,16 @@
+<template>
+  <view>
+    reader.wpy
+  </view>
+</template>
+<style lang="less">
+
+</style>
+<script>
+  import wepy from 'wepy'
+  export default class Reader extends wepy.page{
+    config = {
+      navigationBarTitleText: 'MyReader'
+    }
+  }
+</script>

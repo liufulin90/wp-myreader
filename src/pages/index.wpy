@@ -1,0 +1,79 @@
+<style lang="less">
+@import "./css/home.less";
+</style>
+
+<template>
+  <view class="container">
+    <currentbook :current="current"></currentbook>
+    <bookitem :list="list"></bookitem>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  import BookItem from '../components/bookitem'
+  import CurrentBook from '../components/currentbook'
+
+  export default class Index extends wepy.page {
+    config = {
+      navigationBarTitleText: 'MyReader'
+    }
+
+    components = {
+      bookitem: BookItem,
+      currentbook: CurrentBook
+    }
+
+    data = {
+      current: {
+        cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+        lastChapter: 12,
+        title: '斗破苍穹',
+        author: '天蚕土豆',
+        wordCount: 12333,
+        latelyFollower: 333
+      },
+      current: {
+        cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+        lastChapter: 12,
+        title: '斗破苍穹',
+        author: '天蚕土豆',
+        wordCount: 12333,
+        latelyFollower: 333
+      },
+      list: [
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹1',
+          _id: 'xxxid111'
+        },
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹2',
+          _id: 'xxxid222'
+        },
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹3',
+          _id: 'xxxid333'
+        }
+      ]
+    }
+
+    computed = {
+
+    }
+
+    methods = {
+    }
+
+    onLoad () {
+      /*
+      let self = this
+      this.$parent.getUserInfo(function(userInfo) {
+        self.$apply()
+      })
+      */
+    }
+  }
+</script>

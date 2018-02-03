@@ -1,0 +1,89 @@
+<template>
+  <view class="books">
+    <repeat for="{{list}}" item="item">
+      <view class="book" data-id="{{item._id}}" data-title="{{item.title}}" @touchstart="touchStart" @touchmove="touchCancel" @touchend="touchEnd" >
+        <image class="cover" src="{{item.cover}}"></image>
+        <p>{{item.title}}</p>
+      </view>
+    </repeat>
+  </view>
+</template>
+<style lang="less">
+</style>
+<script>
+  import wepy from 'wepy'
+  export default class BookItem extends wepy.component {
+    props = {
+      list: {}
+    }
+
+    data = {
+      pressed: false,
+      cancel: false,
+      timeout: null
+    }
+
+    methods = {
+      touchStart: function (e) {
+        var that = this
+        var _id = e.currentTarget.dataset.id
+        var title = e.currentTarget.dataset.title
+        that.timeout = setTimeout(() => {
+          that.pressed = true
+          console.log('touchStart setTimeout s')
+          this.press(_id, title)
+        }, 500)
+        return false
+      },
+      touchEnd: function (e) {
+        console.log('touchEnd s')
+        var that = this
+        var _id = e.currentTarget.dataset.id
+        var title = e.currentTarget.dataset.title
+        clearTimeout(that.timeout)
+        if (that.pressed) {
+          that.pressed = false
+          return
+        }
+        if (that.cancel) {
+          that.cancel = false
+          return
+        }
+        this.ontap(_id)
+        return false
+      },
+      touchCancel: function () {
+        var that = this
+        that.cancel = true
+      }
+    }
+
+    ontap(_id){
+      console.log('detail')
+
+      wepy.navigateTo({
+        url: '/pages/reader'
+      })
+    }
+    press(_id, title){
+      wx.showModal({
+        title: '确认删除',
+        content: `从书架移除《${title}》，并清除阅读进度吗？`,
+        showCancel: true,
+        confirmText: '删除',
+        confirmColor: 'red',
+        cancelText: '朕点错了',
+        success: function(res){
+          if (res.confirm) {
+            console.log('用户点击确定')
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
+        }
+      })
+    }
+    onLoad () {
+    }
+  }
+
+</script>

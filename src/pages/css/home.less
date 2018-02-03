@@ -1,0 +1,120 @@
+.currentBook {
+  display: flex;
+  padding: 20px;
+  padding-bottom: 0px;
+  height: 155px;
+  overflow: hidden;
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow:  0 -2px 3px rgba(0, 0, 0, 0.05) inset;
+  color: #fff;
+  .wrap {
+    width: 100%;
+  }
+  .title {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 100;
+  }
+  .search {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 100;
+    padding-left: 30px;
+    .icon {
+      width: 12px;
+      height: 12px;
+      margin-right: 4px;
+      margin-top: 1px;
+    }
+  }
+  .info {
+    padding-left: 110px;
+    .p{
+      margin: 5px 0;
+      font-size: 12px;
+    }
+    .h4{
+      font-weight: bold;
+    }
+  }
+  .bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    filter: blur(30px);
+    z-index: -1;
+    animation: myfirst 20s;
+    animation-iteration-count: infinite;
+  }
+  .infoWrap{
+    width: 100%;
+    .covers{
+      position: absolute;
+      z-index: 0;
+      height: 120px;
+      width: 92px;
+      box-shadow: 0 0px 3px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+}
+.books {
+  display: flex;
+  padding: 20px;
+  padding-bottom: 0;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  .book{
+    height: 160px;
+    width: 90px;
+    display: block;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    .cover{
+      height: 120px;
+      width: 90px;
+      background-size: 100% 100%;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+    p {
+      text-align: center;
+      color: rgba(0, 0, 0, 0.5);
+      margin-top: 6px;
+      font-weight: 100px;
+      font-size: 12px;
+      max-width: 90px;
+      text-overflow:ellipsis;
+      overflow:hidden;
+      white-space:nowrap;
+    }
+  }
+}
+
+
+
+@keyframes myfirst {
+  0% {
+    transform: scale(2) translateY(20%);
+  }
+  70% {
+    transform: scale(1.5) translateY(-30%);
+    -webkit-filter: blur(20px); /* Chrome, Opera */
+    -moz-filter: blur(20px);
+    -ms-filter: blur(20px);
+    filter: blur(20px);
+  }
+  100% {
+    transform: scale(2) translateY(20%);
+  }
+}

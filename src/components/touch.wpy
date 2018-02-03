@@ -1,0 +1,69 @@
+<template>
+  <view @touchstart="touchStart" @touchmove="touchCancel" @touchend="touchEnd" >
+    <slot></slot>
+  </view>
+</template>
+<style lang="less">
+
+</style>
+<script>
+  import wepy from 'wepy'
+
+  export default class Touch extends wepy.component {
+    props = {
+      ontap: {},
+      onPress: {
+        type: Function,
+        default: function () {}
+      }
+    }
+
+    data = {
+      pressed: false,
+      cancel: false,
+      timeout: null
+    }
+
+    methods = {
+      touchStart: function () {
+        var that = this
+        that.timeout = setTimeout(() => {
+          that.pressed = true
+//          console.log('touchStart setTimeout s')
+//          console.log(that)
+          that.$props.onPress()
+          if (that.onPress) that.onPress()
+        }, 500)
+        return false
+      },
+      touchEnd: function () {
+        console.log('touchEnd s')
+        var that = this
+        clearTimeout(that.timeout)
+        if (that.pressed) {
+          that.pressed = false
+          return
+        }
+        if (that.cancel) {
+          that.cancel = false
+          return
+        }
+//        console.log('touchEnd onTap s')
+//        console.log(that)
+//        console.log(that.props.onTap.default())
+        if (that.onTap) that.onTap()
+        return false
+      },
+      touchCancel: function () {
+        var that = this
+        that.cancel = true
+      }
+    }
+
+    onLoad () {
+      let that = this
+      console.log('@@@', that.ontap)
+    }
+  }
+
+</script>

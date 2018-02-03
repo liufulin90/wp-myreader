@@ -1,0 +1,46 @@
+<template>
+  <view class="currentBook">
+    <view class="wrap">
+      <view class="title">
+        MyReader
+        <navigator open-type="navigate" url="/pages/search?code={{item.code}}" >
+          <view class="search">
+            <image class="icon" src="SearchIcon" alt=""></image>
+            Search
+          </view>
+        </navigator>
+      </view>
+      <image class="bg" src="{{current.cover}}" alt=""></image>
+      <view class="infoWrap" @tap="getDetail">
+        <image class="covers" src="{{current.cover}}" alt=""></image>
+        <view class="info">
+          <view class="h4">{{current.title}}</view>
+          <view class="p">{{current.author}}</view>
+          <view class="p">{{current.wordCount}}字、{{current.latelyFollower}}人在追</view>
+          <view class="p">最新章节：{{current.lastChapter}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+<style lang="less">
+</style>
+<script>
+  import wepy from 'wepy'
+  export default class CurrentBook extends wepy.component {
+    props = {
+      current: {}
+    }
+
+    methods = {
+      getDetail: function (){
+        wepy.navigateTo({
+          url: '/pages/reader'
+        })
+      }
+    }
+    onLoad () {
+    }
+  }
+
+</script>
