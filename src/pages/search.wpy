@@ -1,16 +1,126 @@
 <template>
   <view>
-    search
+    <view>
+      <view class="search">
+        <view class="box">
+          <view class="input">
+            <view class="icon"> </view>
+            <input type="search" id="text" bindconfirm="formSubmit" placeholder="输入关键字搜索" />
+          </view>
+          <view class="cancel" @tap="toIndex">取消</view>
+        </view>
+      </view>
+      <view class="itemwrap">
+        <view wx:if="{{!list.length}}" style="text-align: center; color: rgba(0, 0, 0, 0.5)">哦噢，没找到你想要的呢 ╮(￣▽￣)╭ </view>
+        <repeat for="{{list}}" item="item">
+          <view class="item" data-id="{{item._id}}" @tap="getDetail">
+            <image class="cover" src="{{item.cover}}" alt=""></image>
+            <view class="p h5">{{item.title}}</view>
+            <view class="p author">{{item.author}}</view>
+            <view class="p meta">{{item.wordCount}}字、{{item.latelyFollower}} 人在追</view>
+            <view class="p">{{item.shortIntro}}</view>
+          </view>
+        </repeat>
+      </view>
+    </view>
   </view>
 </template>
 <style lang="less">
-
+@import "./css/search.less";
 </style>
 <script>
   import wepy from 'wepy'
-  export default class Search extends wepy.page{
+  export default class Search extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
+    }
+    methods = {
+      formSubmit: function(e) {
+        var value = e.detail.value
+        wepy.showToast({
+          title: value,
+          icon: 'success',
+          duration: 2000
+        })
+      },
+      toIndex: function() {
+        wepy.navigateBack({
+          delta: 30
+        })
+      },
+      getDetail: function(e) {
+        var isStored = false
+        var _id = e.currentTarget.dataset.id
+        if (isStored) {
+          // 已经在本地有阅读过，直接跳转到阅读器
+          wepy.navigateTo({
+            url: '/pages/reader?id=' + _id
+          })
+        } else {
+          // 没有阅读，则跳转到书籍详情页面
+          wepy.navigateTo({
+            url: '/pages/detail?id=' + _id
+          })
+        }
+      }
+    }
+    data = {
+      list: [
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹1',
+          author: 'Jony',
+          wordCount: 100000,
+          shortIntro: '陈曦看着将一块数百斤巨石撇出去的士卒，无语望苍天，这真的是东汉末年？吕布单枪匹...',
+          latelyFollower: 233,
+          _id: 'xxxid111'
+        },
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹2',
+          author: 'Jony',
+          wordCount: 100000,
+          shortIntro: '陈曦看着将一块数百斤巨石撇出去的士卒，无语望苍天，这真的是东汉末年？吕布单枪匹...',
+          latelyFollower: 233,
+          _id: 'xxxid222'
+        },
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹3',
+          author: 'Jony',
+          wordCount: 100000,
+          shortIntro: '陈曦看着将一块数百斤巨石撇出去的士卒，无语望苍天，这真的是东汉末年？吕布单枪匹...',
+          latelyFollower: 233,
+          _id: 'xxxid333'
+        },
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹3',
+          author: 'Jony',
+          wordCount: 100000,
+          shortIntro: '陈曦看着将一块数百斤巨石撇出去的士卒，无语望苍天，这真的是东汉末年？吕布单枪匹...',
+          latelyFollower: 233,
+          _id: 'xxxid333'
+        },
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹3',
+          author: 'Jony',
+          wordCount: 100000,
+          shortIntro: '陈曦看着将一块数百斤巨石撇出去的士卒，无语望苍天，这真的是东汉末年？吕布单枪匹...',
+          latelyFollower: 233,
+          _id: 'xxxid333'
+        },
+        {
+          cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+          title: '斗破苍穹3',
+          author: 'Jony',
+          wordCount: 100000,
+          shortIntro: '陈曦看着将一块数百斤巨石撇出去的士卒，无语望苍天，这真的是东汉末年？吕布单枪匹...',
+          latelyFollower: 233,
+          _id: 'xxxid333'
+        }
+      ]
     }
   }
 </script>

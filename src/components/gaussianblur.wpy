@@ -1,0 +1,57 @@
+<style lang="less">
+  .gaussian {
+    position: relative;
+    overflow: hidden;
+  }
+  .bg {
+    display: block;
+    position: absolute;
+    top:-25%;
+    left: -25%;
+    width: 150%;
+    height: 150%;
+    filter: blur(25px);
+    animation-iteration-count: infinite;
+    background-repeat: repeat;
+    background-size: 100% 100%;
+    z-index: -1;
+    background-position: center;
+  }
+
+  @keyframes run {
+    0% {
+      background-position: 50% 10%;
+    }
+    70% {
+      filter: blur(50px);
+      background-position: 50% 90%;
+    }
+    100% {
+      background-position: 50% 10%;
+    }
+  }
+</style>
+<template>
+  <view class="gaussian">
+    <slot></slot>
+    <view style="background-image: url({{src}});animation: run 25s ease-in-out;background-size: 100% 100%;" class="bg"> </view>
+  </view>
+</template>
+
+<script>
+  import wepy from 'wepy'
+  export default class GaussianBlur extends wepy.component {
+    props = {
+      src: {
+        type: [String],
+        default: ''
+      }
+    }
+
+    methods = {
+    }
+    onLoad () {
+    }
+  }
+
+</script>

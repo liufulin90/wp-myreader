@@ -11,7 +11,7 @@
         </navigator>
       </view>
       <image class="bg" src="{{current.cover}}" alt=""></image>
-      <view class="infoWrap" @tap="getDetail">
+      <view class="infoWrap" @tap="toReader">
         <image class="covers" src="{{current.cover}}" alt=""></image>
         <view class="info">
           <view class="h4">{{current.title}}</view>
@@ -33,7 +33,7 @@
     }
 
     methods = {
-      getDetail: function (){
+      toReader: function (){
         wepy.navigateTo({
           url: '/pages/reader'
         })

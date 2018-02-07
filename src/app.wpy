@@ -1,4 +1,4 @@
-<style lang="less">
+<style lang='less'>
 .container {
   height: 100%;
   flex-direction: column;
@@ -17,6 +17,8 @@ export default class extends wepy.app {
     pages: [
       'pages/index',
       'pages/search',
+      'pages/detail',
+      'pages/chapters',
       'pages/reader',
       'pages/index2',
       'pages/home'
@@ -26,34 +28,34 @@ export default class extends wepy.app {
       navigationBarBackgroundColor: '#fff',
       navigationBarTitleText: 'WeChat',
       navigationBarTextStyle: 'black'
-    },
-    "tabBar": {
-      "color": "#999999",
-      "selectedColor": "#ff6a3c",
-      "backgroundColor": "#ffffff",
-      "borderStyle": "black",
-      "list": [{
-          "pagePath": "pages/index",
-          "text": "首页",
-          "iconPath": "images/icon_home.png",
-          "selectedIconPath": "images/icon_home_active.png"
-      }, {
-          "pagePath": "pages/index2",
-          "text": "分类",
-          "iconPath": "images/icon_classify.png",
-          "selectedIconPath": "images/icon_classify_active.png"
-      }, {
-          "pagePath": "pages/home",
-          "text": "购物车",
-          "iconPath": "images/icon_shop_cart.png",
-          "selectedIconPath": "images/icon_shop_cart_active.png"
-      }, {
-          "pagePath": "pages/home",
-          "text": "我",
-          "iconPath": "images/icon_info.png",
-          "selectedIconPath": "images/icon_info_active.png"
-      }]
     }
+//    'tabBar': {
+//      'color': '#999999',
+//      'selectedColor': '#ff6a3c',
+//      'backgroundColor': '#ffffff',
+//      'borderStyle': 'black',
+//      'list': [{
+//        'pagePath': 'pages/index',
+//        'text': '首页',
+//        'iconPath': 'images/icon_home.png',
+//        'selectedIconPath': 'images/icon_home_active.png'
+//      }, {
+//        'pagePath': 'pages/index2',
+//        'text': '分类',
+//        'iconPath': 'images/icon_classify.png',
+//        'selectedIconPath': 'images/icon_classify_active.png'
+//      }, {
+//        'pagePath': 'pages/home',
+//        'text': '购物车',
+//        'iconPath': 'images/icon_shop_cart.png',
+//        'selectedIconPath': 'images/icon_shop_cart_active.png'
+//      }, {
+//        'pagePath': 'pages/home',
+//        'text': '我',
+//        'iconPath': 'images/icon_info.png',
+//        'selectedIconPath': 'images/icon_info_active.png'
+//      }]
+//    }
   }
 
   globalData = {

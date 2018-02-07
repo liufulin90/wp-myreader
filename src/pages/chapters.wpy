@@ -1,0 +1,26 @@
+<template>
+  <view>
+    chapters.wpy
+  </view>
+</template>
+<style lang="less">
+  @import "./css/detail.less";
+</style>
+<script>
+  import wepy from 'wepy'
+  export default class Chapters extends wepy.page {
+    config = {
+      navigationBarTitleText: 'MyReader'
+    }
+
+    components = {
+    }
+    data = {
+
+    }
+    methods = {
+    }
+    onLoad() {
+    }
+  }
+</script>
