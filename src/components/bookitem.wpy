@@ -71,7 +71,7 @@
         content: `从书架移除《${title}》，并清除阅读进度吗？`,
         showCancel: true,
         confirmText: '删除',
-        confirmColor: 'red',
+        confirmColor: '#FF0000',
         cancelText: '朕点错了',
         success: function(res){
           if (res.confirm) {

@@ -71,7 +71,6 @@
     }
     methods = {
       toSearch: function() {
-        console.log('sdf')
         wepy.navigateBack({
           delta: 1
         })
