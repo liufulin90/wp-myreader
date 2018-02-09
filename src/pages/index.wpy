@@ -1,5 +1,5 @@
 <style lang="less">
-@import "./css/home.less";
+@import "../styles/home.less";
 </style>
 
 <template>

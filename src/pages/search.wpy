@@ -26,7 +26,7 @@
   </view>
 </template>
 <style lang="less">
-@import "./css/search.less";
+@import "../styles/search.less";
 </style>
 <script>
   import wepy from 'wepy'

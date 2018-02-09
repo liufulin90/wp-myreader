@@ -16,7 +16,7 @@
   </view>
 </template>
 <style lang="less">
-  @import "./css/chapters.less";
+  @import "../styles/chapters.less";
 </style>
 <script>
   import wepy from 'wepy'

@@ -1,15 +1,15 @@
 <template>
-  <view class="reader" style="{{color}}">
+  <view class="reader" style="{{(color.background ? 'background:' + color.background + ';' : '') + (color.color ? 'color:' + color.color + ';' : '')}}">
     <view wx:if="chapter.title">
       <view style="min-height: 100vh" @tap="close">
-        <view class="head" style="{{color}}">
+        <view class="head" style="{{(color.background ? 'background:' + color.background + ';' : '') + (color.color ? 'color:' + color.color + ';' : '')}}">
           <view class="info">
             <view class="h3">{{bookName}}</view>
             <view class="p">{{title}}</view>
           </view>
           <view class="menus">
             <view class="button" @tap="back">
-            <image class="img" style="opacity: 0.5" src="./icons/close.svg" alt=""></image>
+            <image class="img" style="opacity: 0.5" src="../icons/close.svg" alt=""></image>
           </view>
           </view>
         </view>
@@ -34,12 +34,12 @@
                 <view class="span" @tap="setMode">{{mode === 'day' ? '黑夜' : '白天'}}</view>
                 <view class="span" data-type="+" @tap="setFontSize">Aa+</view>
                 <view class="span" data-type="-" @tap="setFontSize">Aa-</view>
-                <view class="span" @tap="clear">默认</view>
+                <view class="span" @tap="setRestTheme" >默认</view>
               </view>
               <view class="colors">
                 <view class="colorsBox">
-                  <repeat for="{{COLORS}}" item="item">
-                    <view class="span" style="{{item}}" @tap="setThemeColor"></view>
+                  <repeat for="{{colors}}" item="item">
+                    <view class="span" style="{{item.background ? 'background:' + item.background : ''}}" data-theme="" @tap="setThemeColor({{item}})"></view>
                   </repeat>
                 </view>
               </view>
@@ -55,29 +55,33 @@
 </template>
 
 <style lang="less">
-@import "./css/reader.less";
+@import "../styles/reader.less";
 </style>
 
 <script>
   import wepy from 'wepy'
+  import {COLORS, MODE_COLOR} from '../utils/constant.js'
   export default class Reader extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
     }
 
     data = {
+      defaultMode: 'day',
+      defaultColor: MODE_COLOR['day'],
       bookName: '斗破苍穹',
       title: '第一章 陨落的天才',
       content: '望着测验魔石碑上面闪亮得甚至有些刺眼的五个大字，少年面无表情，紧握的手掌，因为大力，而导致略微尖锐的指甲深深的刺进了掌心之中，带来一阵阵钻心的疼痛…\n“哎，这废物真是把家族的脸都给丢光了。”',
-      menuState: false,
+      menuState: true,
       currentChapter: 0,
       chapters: [
         {}
       ],
-      color: 'background:#FAF9DE',
-      mode: 'day',
+      mode: this.defaultMode,
+      color: this.defaultColor,// 'background:#FAF9DE',
+      colors: COLORS,
       fontSize: 16,
-      visible: false  // 设置弹窗不显示
+      visible: true  // 设置弹窗不显示
     }
     methods = {
       back: function () {
@@ -101,25 +105,25 @@
       },
       open: function (e) {
         this.visible = true
-//        document.addEventListener('click', this.close);
       },
       close: function () {
         this.visible = false
-        console.log(123)
       },
       stopEvent: function (e) {
       },
       setMode: function () {
-
+        this.mode = this.mode === 'day' ? 'night' : 'day'
       },
       setFontSize: function (e) {
         e.currentTarget.dataset.type === '+' ? this.fontSize++ : this.fontSize--
       },
-      clear: function () {
-
+      setRestTheme: function () {
+        console.log(this.defaultMode, this.defaultColor)
+        this.mode = this.defaultMode
+        this.color = this.defaultColor
       },
-      setThemeColor: function () {
-
+      setThemeColor: function (item) {
+        this.color = item
       }
     }
   }

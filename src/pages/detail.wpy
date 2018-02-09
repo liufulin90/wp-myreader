@@ -38,7 +38,7 @@
   </view>
 </template>
 <style lang="less">
-@import "./css/detail.less";
+@import "../styles/detail.less";
 </style>
 <script>
   import wepy from 'wepy'
