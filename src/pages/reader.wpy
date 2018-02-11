@@ -60,28 +60,29 @@
 
 <script>
   import wepy from 'wepy'
-  import {COLORS, MODE_COLOR} from '../utils/constant.js'
+  import {COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING } from '../utils/constant.js'
+  import {getStorage, setStorage} from '../utils/storage.js'
   export default class Reader extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
     }
 
     data = {
-      defaultMode: 'day',
-      defaultColor: MODE_COLOR['day'],
+      defaultMode: DEFAULT_SETTING.mode,
+      defaultColor: DEFAULT_SETTING.color,
       bookName: '斗破苍穹',
       title: '第一章 陨落的天才',
       content: '望着测验魔石碑上面闪亮得甚至有些刺眼的五个大字，少年面无表情，紧握的手掌，因为大力，而导致略微尖锐的指甲深深的刺进了掌心之中，带来一阵阵钻心的疼痛…\n“哎，这废物真是把家族的脸都给丢光了。”',
-      menuState: true,
+      menuState: false,
       currentChapter: 0,
       chapters: [
         {}
       ],
-      mode: this.defaultMode,
-      color: this.defaultColor,// 'background:#FAF9DE',
+      mode: DEFAULT_SETTING.mode,
+      color: DEFAULT_SETTING.color,// 'background:#FAF9DE',
       colors: COLORS,
-      fontSize: 16,
-      visible: true  // 设置弹窗不显示
+      fontSize: DEFAULT_SETTING.fontSize,
+      visible: false  // 设置弹窗不显示
     }
     methods = {
       back: function () {
@@ -113,18 +114,41 @@
       },
       setMode: function () {
         this.mode = this.mode === 'day' ? 'night' : 'day'
+        var color = MODE_COLOR[this.mode]
+        this.color = color
+        setStorage(STORAGE_SETTING, {
+          color: color
+        })
       },
       setFontSize: function (e) {
         e.currentTarget.dataset.type === '+' ? this.fontSize++ : this.fontSize--
+        setStorage(STORAGE_SETTING, {
+          fontSize: this.fontSize
+        })
       },
       setRestTheme: function () {
-        console.log(this.defaultMode, this.defaultColor)
-        this.mode = this.defaultMode
-        this.color = this.defaultColor
+        this.mode = DEFAULT_SETTING.mode
+        this.color = DEFAULT_SETTING.color
+        this.fontSize = DEFAULT_SETTING.fontSize
+        setStorage(STORAGE_SETTING, DEFAULT_SETTING)
       },
       setThemeColor: function (item) {
         this.color = item
+        setStorage(STORAGE_SETTING, {
+          color: item
+        })
       }
+    }
+    // 初始化阅读器设置
+    initSetting() {
+      let settings = getStorage(STORAGE_SETTING)
+      this.mode = settings.mode
+      this.color = settings.color
+      this.fontSize = settings.fontSize
+    }
+    onShow () {
+      var that = this
+      this.initSetting()
     }
   }
 </script>

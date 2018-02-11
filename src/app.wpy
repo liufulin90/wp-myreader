@@ -11,6 +11,8 @@
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
+import {MODE_COLOR, STORAGE_SETTING} from './utils/constant.js'
+import {getStorage, setStorage} from './utils/storage.js'
 
 export default class extends wepy.app {
   config = {
@@ -69,6 +71,11 @@ export default class extends wepy.app {
 
   onLaunch() {
     this.testAsync()
+    // 启动时初始化阅读器设置
+    let settings = getStorage(STORAGE_SETTING)
+    if (!settings) {
+      setStorage(STORAGE_SETTING, MODE_COLOR, true)
+    }
   }
 
   sleep (s) {

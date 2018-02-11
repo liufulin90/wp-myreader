@@ -20,8 +20,22 @@ export const SYSTEM_INFO = "systemInfo";
 export const ADDRESS_ID = "addressId";
 
 export const SEL_CLASS_CODE = "selClassCode";
+/**
+ * 阅读器
+ * @type {string}
+ */
+export const STORAGE_READER = 'storage:reader';
+/**
+ * 设置
+ * @type {string}
+ */
+export const STORAGE_SETTING = 'storage:setting';
+/**
+ * 书架
+ * @type {string}
+ */
+export const STORAGE_STORE = 'storage:store';
 
-export const PERSIST_READER= 'reduxPersist:reader';
 /**
  * 主题颜色
  * @type {*[]}
@@ -60,3 +74,11 @@ export const MODE_COLOR = {
     background: '#000'
   }
 };
+
+export const DEFAULT_SETTING = {
+  mode: 'day',
+  color: {
+    background: '#FAF9DE'
+  },
+  fontSize: 20
+}
