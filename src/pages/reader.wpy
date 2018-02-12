@@ -4,8 +4,8 @@
       <view style="min-height: 100vh" @tap="close">
         <view class="head" style="{{(color.background ? 'background:' + color.background + ';' : '') + (color.color ? 'color:' + color.color + ';' : '')}}">
           <view class="info">
-            <view class="h3">{{bookName}}</view>
-            <view class="p">{{title}}</view>
+            <view class="h3">{{detail.title}}</view>
+            <view class="p">{{chapter.title}}</view>
           </view>
           <view class="menus">
             <view class="button" @tap="back">
@@ -15,7 +15,7 @@
         </view>
         <view class="content" @tap="close" style="font-size:{{fontSize}}px">
           <view class="p">
-            {{content}}
+            {{chapter.body}}
           </view>
         </view>
       </view>
@@ -60,26 +60,34 @@
 
 <script>
   import wepy from 'wepy'
-  import {COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING } from '../utils/constant.js'
+  import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING } from '../utils/constant.js'
   import {getStorage, setStorage} from '../utils/storage.js'
   export default class Reader extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
     }
-
     data = {
+      chapter: {
+        title: '第一章 陨落的天才',
+        body: '望着测验魔石碑上面闪亮得甚至有些刺眼的五个大字，少年面无表情，紧握的手掌，因为大力，而导致略微尖锐的指甲深深的刺进了掌心之中，带来一阵阵钻心的疼痛…\n“哎，这废物真是把家族的脸都给丢光了。”'
+      },
+      chapters: [],
+      chaptersContent: [],
+      currentChapter: 0,
+      currentSource: 0,
+      detail: {
+        title: '斗破苍穹'
+      },
+      downloadPercent: 0,
+      downloadStatus: false,
+      id: '50865988d7a545903b000009',
+      menuState: false,
+      source: [],
+
       defaultMode: DEFAULT_SETTING.mode,
       defaultColor: DEFAULT_SETTING.color,
-      bookName: '斗破苍穹',
-      title: '第一章 陨落的天才',
-      content: '望着测验魔石碑上面闪亮得甚至有些刺眼的五个大字，少年面无表情，紧握的手掌，因为大力，而导致略微尖锐的指甲深深的刺进了掌心之中，带来一阵阵钻心的疼痛…\n“哎，这废物真是把家族的脸都给丢光了。”',
-      menuState: false,
-      currentChapter: 0,
-      chapters: [
-        {}
-      ],
       mode: DEFAULT_SETTING.mode,
-      color: DEFAULT_SETTING.color,// 'background:#FAF9DE',
+      color: DEFAULT_SETTING.color, // 'background:#FAF9DE'
       colors: COLORS,
       fontSize: DEFAULT_SETTING.fontSize,
       visible: false  // 设置弹窗不显示
@@ -147,7 +155,6 @@
       this.fontSize = settings.fontSize
     }
     onShow () {
-      var that = this
       this.initSetting()
     }
   }
