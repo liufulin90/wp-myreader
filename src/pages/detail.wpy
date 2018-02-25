@@ -1,13 +1,33 @@
 <template>
   <view>
     <view>
+      <view class="gaussian">
+        <view>
+          <view class="back">
+            <view @tap="toSearch">返回</view>
+        </view>
+        <view class="book">
+          <image class="cover" src="{{apiHost + detail.cover}}" alt=""></image>
+          <view class="info">
+            <view class="h1">{{detail.title}}</view>
+            <view class="p">{{detail.author}}</view>
+            <view class="p">{{detail.majorCate}} / {{detail.minorCate}}</view>
+            <view class="p meta">{{detail.wordCount}}字、{{detail.latelyFollower}} 人在追</view>
+            <view class="p">{{detail.isSerial ? '连载中' : '已完结'}}</view>
+          </view>
+        </view>
+      </view>
+        <view style="background-image: url({{gaussianCover}});animation: run 25s ease-in-out;background-size: 100% 100%;" class="bg"> </view>
+      </view>
+      <!--
+      没法动态改变子组件的值，很奇怪，因此注视了
       <gaussianblur :src.sync="gaussianCover">
         <view>
           <view class="back">
             <view @tap="toSearch">返回</view>
           </view>
           <view class="book">
-            <image class="cover" src="{{detail.cover}}" alt=""></image>
+            <image class="cover" src="{{apiHost + detail.cover}}" alt=""></image>
             <view class="info">
               <view class="h1">{{detail.title}}</view>
               <view class="p">{{detail.author}}</view>
@@ -18,12 +38,15 @@
           </view>
         </view>
       </gaussianblur>
+      -->
       <view class="body">
         <view class="p" class="desc">{{detail.longIntro}}</view>
         <view class="tags">
-          <view class="span" wx:for="{{detail.tags}}">
-            {{item}}
-          </view>
+          <repeat for="{{detail.tags}}" item="item">
+            <view class="span">
+              {{item}}
+            </view>
+          </repeat>
         </view>
         <view class="last">最新章节：{{detail.lastChapter}}</view>
         <a class="read" @tap="getReader">立即阅读</a>
@@ -43,6 +66,9 @@
 <script>
   import wepy from 'wepy'
   import GaussianBlur from '../components/gaussianblur'
+  import {getDetail} from '../utils/api'
+  import { API_HOST } from '../utils/constant'
+
   export default class Detail extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
@@ -53,18 +79,19 @@
     }
     data = {
       gaussianCover: '',
+      apiHost: API_HOST,
       detail: {
         animation: false,
-        cover: 'http://myreader.linxins.com/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-        lastChapter: 12,
-        title: '斗破苍穹',
-        author: '天蚕土豆',
-        majorCate: '历史',
-        minorCate: '穿越历史',
-        wordCount: 12333,
-        latelyFollower: 333,
-        longIntro: '陈曦看着将一块数百斤巨石撇出去的士卒，无语望苍天，这真的是东汉末年？吕布单枪匹...',
-        tags: ['历史', '秦汉三国', '穿越历史'],
+        cover: '',
+        lastChapter: '',
+        title: '',
+        author: '',
+        majorCate: '',
+        minorCate: '',
+        wordCount: '',
+        latelyFollower: '',
+        longIntro: '',
+        tags: [],
         isSerial: '连载中', // isSerial ? '连载中' : '已完结'
         downloadStatus: '离线下载'// !downloadStatus ? '离线下载' : '已下载'
       }
@@ -81,9 +108,23 @@
         })
       }
     }
-    onLoad() {
+    onLoad(option) {
+      console.log('detail option', option)
       var that = this
-      that.gaussianCover = that.detail.cover
+      getDetail({
+        query: {
+          id: option.id
+        },
+        success: function(res) {
+          var newDetail = Object.assign(that.detail, res.data)
+          that.setData({
+            detail: newDetail,
+            gaussianCover: API_HOST + newDetail.cover
+          })
+          that.detail = newDetail
+          that.gaussianCover = API_HOST + newDetail.cover
+        }
+      })
     }
   }
 </script>

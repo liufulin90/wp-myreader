@@ -60,8 +60,10 @@
 
 <script>
   import wepy from 'wepy'
-  import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING } from '../utils/constant.js'
-  import {getStorage, setStorage} from '../utils/storage.js'
+  import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING } from '../utils/constant'
+  import {getStorage, setStorage} from '../utils/storage'
+  import {getDetail} from '../utils/api'
+
   export default class Reader extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
@@ -81,9 +83,9 @@
       downloadPercent: 0,
       downloadStatus: false,
       id: '50865988d7a545903b000009',
-      menuState: false,
       source: [],
 
+      menuState: false,
       defaultMode: DEFAULT_SETTING.mode,
       defaultColor: DEFAULT_SETTING.color,
       mode: DEFAULT_SETTING.mode,
@@ -147,6 +149,7 @@
         })
       }
     }
+
     // 初始化阅读器设置
     initSetting() {
       let settings = getStorage(STORAGE_SETTING)
@@ -156,6 +159,18 @@
     }
     onShow () {
       this.initSetting()
+    }
+
+    onLoad (option) {
+      console.log('option', option)
+      getDetail({
+        query: {
+          id: '50865988d7a545903b000009'
+        },
+        success: function(res) {
+          console.log(res)
+        }
+      })
     }
   }
 </script>

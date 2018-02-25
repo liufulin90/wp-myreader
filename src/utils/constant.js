@@ -1,4 +1,9 @@
 /**
+ * 小程序请求接口的域名
+ * @type {string}
+ */
+export const API_HOST = 'https://wpreader.linxins.com';
+/**
  * 用户code 换取 session_key
  * @type {String}
  */

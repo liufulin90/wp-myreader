@@ -10,9 +10,9 @@
           </view>
         </navigator>
       </view>
-      <image class="bg" src="{{current.cover}}" alt=""></image>
+      <image class="bg" src="{{apiHost + current.cover}}" alt=""></image>
       <view class="infoWrap" @tap="toReader">
-        <image class="covers" src="{{current.cover}}" alt=""></image>
+        <image class="covers" src="{{apiHost + current.cover}}" alt=""></image>
         <view class="info">
           <view class="h4">{{current.title}}</view>
           <view class="p">{{current.author}}</view>
@@ -27,15 +27,20 @@
 </style>
 <script>
   import wepy from 'wepy'
+  import { API_HOST } from '../utils/constant'
   export default class CurrentBook extends wepy.component {
     props = {
       current: {}
     }
-
+    data = {
+      apiHost: API_HOST
+    }
     methods = {
       toReader: function (){
+        var _id = this.current._id
+        console.log(this.current)
         wepy.navigateTo({
-          url: '/pages/reader'
+          url: '/pages/reader?id=' + _id
         })
       }
     }

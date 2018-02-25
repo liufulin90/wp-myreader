@@ -2,7 +2,7 @@
   <view class="books">
     <repeat for="{{list}}" item="item">
       <view class="book" data-id="{{item._id}}" data-title="{{item.title}}" @touchstart="touchStart" @touchmove="touchCancel" @touchend="touchEnd" >
-        <image class="cover" src="{{item.cover}}"></image>
+        <image class="cover" src="{{apiHost + item.cover}}"></image>
         <p>{{item.title}}</p>
       </view>
     </repeat>
@@ -12,12 +12,14 @@
 </style>
 <script>
   import wepy from 'wepy'
+  import { API_HOST } from '../utils/constant'
   export default class BookItem extends wepy.component {
     props = {
       list: {}
     }
 
     data = {
+      apiHost: API_HOST,
       pressed: false,
       cancel: false,
       timeout: null
@@ -59,10 +61,8 @@
     }
 
     ontap(_id){
-      console.log('detail')
-
       wepy.navigateTo({
-        url: '/pages/reader'
+        url: '/pages/reader?id=' + _id
       })
     }
     press(_id, title){

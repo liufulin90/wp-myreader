@@ -69,19 +69,20 @@
   .info {
     float: left;
     display: block;
-    padding: 0 20px;
-    padding-bottom: 0;
+    padding: 0 0 0 20px;
     opacity: hidden;
     display: block;
     color: #fff;
     .h1 {
       margin: 0;
+      max-width: 200px;
       font-size: 16px;
       font-weight: bold;
     }
     .p {
       font-size: 14px;
       margin: 5px 0;
+      max-width: 200px;
     }
   }
 }
@@ -124,5 +125,37 @@
       border-radius: 10px;
       background-color: #ff5722;
     }
+  }
+}
+
+.gaussian {
+  position: relative;
+  overflow: hidden;
+}
+.bg {
+  display: block;
+  position: absolute;
+  top:-25%;
+  left: -25%;
+  width: 150%;
+  height: 150%;
+  filter: blur(25px);
+  animation-iteration-count: infinite;
+  background-repeat: repeat;
+  background-size: 100% 100%;
+  z-index: -1;
+  background-position: center;
+}
+
+@keyframes run {
+  0% {
+    background-position: 50% 10%;
+  }
+  70% {
+    filter: blur(50px);
+    background-position: 50% 90%;
+  }
+  100% {
+    background-position: 50% 10%;
   }
 }
