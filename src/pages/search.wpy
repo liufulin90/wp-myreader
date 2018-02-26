@@ -45,22 +45,25 @@
         searchBook({
           query: {
             keyword: value
-          },
-          success: function(res) {
-            that.setData({
-              status: true,
-              list: res.data.books
-            })
-            that.list = res.data.books
-            that.status = true
-          },
-          fail: function(res) {
-            wepy.showToast({
-              title: '哎哟，网络不给力呢！',
-              icon: 'none',
-              duration: 2000
-            })
           }
+        }).then((res) => {
+          res.data.books.forEach(function(item){
+            item.wordCount = item.wordCount > 10000 ? parseInt(item.wordCount / 10000) + '万' : item.wordCount
+            item.latelyFollower = item.latelyFollower > 10000 ? parseInt(item.latelyFollower / 10000) + '万' : item.latelyFollower
+            return item
+          })
+          that.setData({
+            status: true,
+            list: res.data.books
+          })
+          that.list = res.data.books
+          that.status = true
+        }).catch(() => {
+          wepy.showToast({
+            title: '哎哟，网络不给力呢！',
+            icon: 'none',
+            duration: 2000
+          })
         })
       },
       toIndex: function() {

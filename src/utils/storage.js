@@ -18,7 +18,7 @@ const getStorage = function (key, isDeep = false) {
 const setStorage = function (key, data, isMerge = true) {
   if (isMerge) {
     let getData = wx.getStorageSync(key)
-    data = typeof getData == 'object' ? Object.assign(getData, data) : data
+    data = getData && typeof getData == 'object' ? Object.assign(getData, data) : data
   }
   wx.setStorageSync(key, data)
 }

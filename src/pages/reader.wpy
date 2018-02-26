@@ -161,16 +161,15 @@
       this.initSetting()
     }
 
-    onLoad (option) {
+    async onLoad (option) {
       console.log('option', option)
-      getDetail({
+      const res = await getDetail({
         query: {
-          id: '50865988d7a545903b000009'
-        },
-        success: function(res) {
-          console.log(res)
+          id: option.id
         }
       })
+      console.log(res)
+
     }
   }
 </script>

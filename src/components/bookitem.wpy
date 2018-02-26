@@ -41,7 +41,7 @@
         console.log('touchEnd s')
         var that = this
         var _id = e.currentTarget.dataset.id
-        var title = e.currentTarget.dataset.title
+//        var title = e.currentTarget.dataset.title
         clearTimeout(that.timeout)
         if (that.pressed) {
           that.pressed = false
@@ -60,12 +60,12 @@
       }
     }
 
-    ontap(_id){
+    ontap(_id) {
       wepy.navigateTo({
         url: '/pages/reader?id=' + _id
       })
     }
-    press(_id, title){
+    press(_id, title) {
       wx.showModal({
         title: '确认删除',
         content: `从书架移除《${title}》，并清除阅读进度吗？`,
@@ -73,7 +73,7 @@
         confirmText: '删除',
         confirmColor: '#FF0000',
         cancelText: '朕点错了',
-        success: function(res){
+        success: function(res) {
           if (res.confirm) {
             console.log('用户点击确定')
           } else if (res.cancel) {
