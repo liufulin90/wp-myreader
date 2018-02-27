@@ -50,7 +50,7 @@
         </view>
         <view class="last">最新章节：{{detail.lastChapter}}</view>
         <a class="read" data-id="{{detail._id}}" @tap="getReader">立即阅读</a>
-        <a class="download" data-id="{{detail._id}}" @tap="downLoad">{{detail.downloadStatus}}</a>
+        <a class="download" data-id="{{detail._id}}" @tap="downLoad">{{detail.downloadStatus ? '离线下载' : '已下载'}}</a>
       </view>
       <view wx:if="{{detail.downloadPercent > 1}}" class="progressWrap">
         <view class="progressBody">
@@ -93,8 +93,8 @@
         latelyFollower: '',
         longIntro: '',
         tags: [],
-        isSerial: '连载中', // isSerial ? '连载中' : '已完结'
-        downloadStatus: '离线下载'// !downloadStatus ? '离线下载' : '已下载'
+        isSerial: false, // isSerial ? '连载中' : '已完结'
+        downloadStatus: false// !downloadStatus ? '离线下载' : '已下载'
       }
     }
     methods = {
@@ -152,7 +152,7 @@
             }
             await setStorage(STORAGE_STORE, {...reader})
             // reader/clear
-            await setStorage(STORAGE_READER, INIT_READER_STATE)
+            await setStorage(STORAGE_READER, INIT_READER_STATE, false)
 
             if (book && book.detail && book.source) {
               console.log(`从书架取回《${book.detail.title}》`)
@@ -301,8 +301,11 @@
       that.detail = newDetail
       that.gaussianCover = API_HOST + newDetail.cover
     }
+
     onLoad(option) {
-      option.id = '53c0999b4d33ab2a290bac56'
+      // 防治reader中缺少字段
+      setStorage(STORAGE_READER, Object.assign(INIT_READER_STATE, getStorage(STORAGE_READER) || {}))
+//      option.id = '53c0999b4d33ab2a290bac56'
       this.loadDetail(option)
     }
   }

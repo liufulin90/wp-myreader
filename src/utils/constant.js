@@ -99,5 +99,5 @@ export const INIT_READER_STATE = {
   chaptersContent: [], // 章节列表并包含其内容
   chapter: {},        // 当前章节
   detail: {},         // 书籍详情
-  menuState: false,   // 底部菜单是否展开 true：展开 false：收起
+  menuState: false   // 底部菜单是否展开 true：展开 false：收起
 };
