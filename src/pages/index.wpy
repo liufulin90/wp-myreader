@@ -63,9 +63,9 @@
     }
 
     onLoad () {
-//      var bookStore = getStorage(STORAGE_STORE)
-//      this.list = bookStore
-//      console.log('bookStore', bookStore)
+      var bookStore = getStorage(STORAGE_STORE)
+      this.list = bookStore
+      console.log('bookStore', bookStore)
       /*
       let self = this
       this.$parent.getUserInfo(function(userInfo) {

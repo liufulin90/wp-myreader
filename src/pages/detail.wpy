@@ -69,7 +69,7 @@
   import { getDetail, getSource, getChapterList, getChapter } from '../utils/api'
   import { getStorage, setStorage } from '../utils/storage'
   import { API_HOST, STORAGE_READER, STORAGE_STORE, INIT_READER_STATE } from '../utils/constant'
-
+  import tip from '../utils/tip'
   export default class Detail extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
@@ -106,7 +106,12 @@
       getReader: function(e) {
         var _id = e.currentTarget.dataset.id
         // 根据书籍id获取书源
-        this.getSourceData(_id)
+        var readerId = this.getSourceData(_id)
+        if (readerId) {
+          wepy.navigateTo({
+            url: '/pages/reader?id=' + readerId
+          })
+        }
       },
       downLoad: function(e) {
         var _id = e.currentTarget.dataset.id
@@ -150,41 +155,49 @@
             if (oldDetail && oldDetail.title) {
               console.log(`将《${oldDetail.title}》放回书架`)
             }
-            await setStorage(STORAGE_STORE, {...reader})
+            await setStorage(STORAGE_STORE, {[currentId] : reader})
             // reader/clear
             await setStorage(STORAGE_READER, INIT_READER_STATE, false)
 
             if (book && book.detail && book.source) {
               console.log(`从书架取回《${book.detail.title}》`)
               await setStorage(STORAGE_READER, { ...book })
-              return
+              return id
             }
           } else {
-            return
+            return currentId
           }
         }
         const getDetailJson = await getDetail({
           query:{
             id: id
-          }
+          },
+          loading: true
         })
         const detail = getDetailJson.data
         console.log('@@getdetail', detail)
         const getSourceJson = await getSource({
           query:{
             id: id
-          }
+          },
+          loading: true
         })
         const source = getSourceJson.data
         console.log('@@get source', source)
         console.log(`从网络获取《${detail.title}》`)
         console.log('###save', { source: source, id: id, detail: detail })
         setStorage(STORAGE_READER, { source: source, id: id, detail: detail })
+        setStorage(STORAGE_STORE, {[id] : getStorage(STORAGE_READER)})
         console.log(`阅读：${detail.title}`)
         await this.getChapterListData()
+        tip.loaded()
+        return id
       } catch (error) {
-        console.log(error);
+        console.log(error)
+        tip.loaded()
+        tip.alert('好像哪里出错了')
       }
+      return null
     }
 
     /**
@@ -230,7 +243,8 @@
         const chapterListData = await getChapterList({
           query: {
             id: _id
-          }
+          },
+          loading: true
         })
         const chapters = chapterListData.data
         console.log('request chapters', chapterListData)
@@ -261,7 +275,8 @@
           const chapterData = await getChapter({
             query: {
               link: link
-            }
+            },
+            loading: true
           })
           const chapter = chapterData.data.chapter
           console.log('chapter 章节', chapter)

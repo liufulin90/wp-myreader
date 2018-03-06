@@ -11,6 +11,7 @@ const SIGN = md5.hex_md5((TIMESTAMP + API_SECRET_KEY).toLowerCase())
 const wxRequest = (params = {}, url) => {
   tip.loading()
   let data = params.query || {}
+  let loaded = params.loading === true ? false : true
   return new Promise((resolve, reject) => {
     wx.request({
       url: API_HOST + url,
@@ -19,11 +20,11 @@ const wxRequest = (params = {}, url) => {
       header: { 'Content-Type': 'application/json' },
       success: function(res) {
         resolve(res)
-        tip.loaded()
+        loaded && tip.loaded()
       },
       fail: function(res) {
         reject(res)
-        tip.loaded()
+        loaded && tip.loaded()
       }
     })
   })
