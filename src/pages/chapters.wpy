@@ -6,7 +6,7 @@
                  bindscroll="scroll"
                  scroll-into-view="{{'chatperid' + (currentChapter-2 > 0 ? currentChapter-2 : 0)}}">
       <view class="list">
-        <view class="li" wx:for="{{chapters}}" wx:for-index="idx" wx:for-item="item">
+        <view class="li" wx:for="{{chapters}}" wx:key="" wx:for-index="idx" wx:for-item="item">
         <a id="{{'chatperid' + idx}}" style="{{idx === currentChapter ? 'color:#FF0000' : ''}}" data-chaphterindex="{{idx}}" @tap="goToChapter">
         {{index === currentChapter ? '当前: ' + item.title : item.title }}
         </a>
@@ -20,6 +20,8 @@
 </style>
 <script>
   import wepy from 'wepy'
+  import { STORAGE_READER, STORAGE_STORE } from '../utils/constant'
+  import {getStorage, setStorage} from '../utils/storage'
   export default class Chapters extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
@@ -30,386 +32,16 @@
     data = {
       currentChapter: 3,
       chapters: [
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262429.shtml',
-          order: 0,
-          partsize: 0,
-          title: '土豆三江访谈感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言1',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言2',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言3',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言4',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言5',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言6',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言7',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言8',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言9',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言10',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        },
-        {
-          currency: 0,
-          isVip: false,
-          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-          order: 0,
-          partsize: 0,
-          title: '封推感言',
-          totalpage: 0,
-          unreadble: false
-        }
+//        {
+//          currency: 0,
+//          isVip: false,
+//          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
+//          order: 0,
+//          partsize: 0,
+//          title: '封推感言',
+//          totalpage: 0,
+//          unreadble: false
+//        }
       ]
     }
     methods = {
@@ -419,9 +51,11 @@
         })
       },
       goToChapter: function(e) {
-        console.log(e)
         var chaphterindex = e.currentTarget.dataset.chaphterindex
         console.log(chaphterindex)
+        const { chapters, id } = getStorage(STORAGE_READER)
+        setStorage(STORAGE_READER, {currentChapter: chaphterindex})
+        setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
         // 这里先往store里面存东西，然后再回退
         wepy.navigateBack({
           delta: 1
@@ -429,6 +63,8 @@
       }
     }
     onLoad() {
+      var {chapters} = getStorage(STORAGE_READER)
+      this.chapters = chapters
     }
   }
 </script>

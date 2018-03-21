@@ -1,9 +1,9 @@
 <template>
   <view class="books">
     <repeat for="{{list}}" item="item">
-      <view class="book" data-id="{{item._id}}" data-title="{{item.title}}" @touchstart="touchStart" @touchmove="touchCancel" @touchend="touchEnd" >
-        <image class="cover" src="{{apiHost + item.cover}}"></image>
-        <p>{{item.title}}</p>
+      <view class="book" data-id="{{item.detail._id}}" data-title="{{item.detail.title}}" @touchstart="touchStart" @touchmove="touchCancel" @touchend="touchEnd" >
+        <image class="cover" src="{{apiHost + item.detail.cover}}"></image>
+        <p>{{item.detail.title}}</p>
       </view>
     </repeat>
   </view>
@@ -12,7 +12,8 @@
 </style>
 <script>
   import wepy from 'wepy'
-  import { API_HOST } from '../utils/constant'
+  import { API_HOST, STORAGE_STORE, STORAGE_READER } from '../utils/constant'
+  import {getStorage, setStorage} from '../utils/storage'
   export default class BookItem extends wepy.component {
     props = {
       list: {}
@@ -61,11 +62,14 @@
     }
 
     ontap(_id) {
+      var bookStore = getStorage(STORAGE_STORE)
+      setStorage(STORAGE_READER, bookStore[_id])
       wepy.navigateTo({
         url: '/pages/reader?id=' + _id
       })
     }
     press(_id, title) {
+      var that = this
       wx.showModal({
         title: '确认删除',
         content: `从书架移除《${title}》，并清除阅读进度吗？`,
@@ -76,6 +80,12 @@
         success: function(res) {
           if (res.confirm) {
             console.log('用户点击确定')
+            var bookStore = getStorage(STORAGE_STORE)
+            delete bookStore[_id]
+            setStorage(STORAGE_STORE, bookStore, false)
+            that.list = Object.values(bookStore)
+            that.$parent.list = Object.values(bookStore)
+            that.$parent.$apply()
           } else if (res.cancel) {
             console.log('用户点击取消')
           }

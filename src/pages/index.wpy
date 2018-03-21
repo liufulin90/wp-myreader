@@ -4,8 +4,8 @@
 
 <template>
   <view class="container">
-    <currentbook :current="current"></currentbook>
-    <bookitem :list="list"></bookitem>
+    <currentbook :current.sync="current"></currentbook>
+    <bookitem :list.sync="list"></bookitem>
   </view>
 </template>
 
@@ -13,8 +13,8 @@
   import wepy from 'wepy'
   import BookItem from '../components/bookitem'
   import CurrentBook from '../components/currentbook'
-  import {getStorage, setStorage} from '../utils/storage.js'
-  import { STORAGE_STORE } from '../utils/constant.js'
+  import {getStorage, setStorage} from '../utils/storage'
+  import { STORAGE_STORE, STORAGE_READER } from '../utils/constant'
 
   export default class Index extends wepy.page {
     config = {
@@ -37,21 +37,21 @@
         _id: '50865988d7a545903b000009'
       },
       list: [
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-          title: '斗破苍穹1',
-          _id: '50865988d7a545903b000009'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-          title: '斗破苍穹2',
-          _id: '50865988d7a545903b000009'
-        },
-        {
-          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-          title: '斗破苍穹3',
-          _id: '50865988d7a545903b000009'
-        }
+//        {
+//          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+//          title: '斗破苍穹1',
+//          _id: '50865988d7a545903b000009'
+//        },
+//        {
+//          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+//          title: '斗破苍穹2',
+//          _id: '50865988d7a545903b000009'
+//        },
+//        {
+//          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
+//          title: '斗破苍穹3',
+//          _id: '50865988d7a545903b000009'
+//        }
       ]
     }
 
@@ -63,15 +63,24 @@
     }
 
     onLoad () {
-      var bookStore = getStorage(STORAGE_STORE)
-      this.list = bookStore
-      console.log('bookStore', bookStore)
       /*
       let self = this
       this.$parent.getUserInfo(function(userInfo) {
         self.$apply()
       })
       */
+    }
+    onShow() {
+      var readerStore = getStorage(STORAGE_READER)
+      if (readerStore && readerStore.detail) {
+        this.current = readerStore.detail
+        this.current.wordCount = this.current.wordCount > 10000 ? parseInt(this.current.wordCount / 10000) + '万' : this.current.wordCount
+        this.current.latelyFollower = this.current.latelyFollower > 10000 ? parseInt(this.current.latelyFollower / 10000) + '万' : this.current.latelyFollower
+      }
+
+      var bookStore = getStorage(STORAGE_STORE)
+      this.list = Object.values(bookStore)
+      console.log('bookStore', this.list)
     }
   }
 </script>

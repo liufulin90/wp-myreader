@@ -4,8 +4,8 @@
       <view style="min-height: 100vh" @tap="close">
         <view class="head" style="{{(color.background ? 'background:' + color.background + ';' : '') + (color.color ? 'color:' + color.color + ';' : '')}}">
           <view class="info">
-            <view class="h3">{{detail.title}}</view>
-            <view class="p">{{chapter.title}}</view>
+            <view class="h3">{{book.detail.title}}</view>
+            <view class="p">{{book.chapter.title}}</view>
           </view>
           <view class="menus">
             <view class="button" @tap="back">
@@ -15,7 +15,7 @@
         </view>
         <view class="content" @tap="close" style="font-size:{{fontSize}}px">
           <view class="p">
-            {{chapter.body}}
+            {{book.chapter.body}}
           </view>
         </view>
       </view>
@@ -24,8 +24,8 @@
         <view class="{{menuState ? 'btnMain' : 'btnMainClose'}}" @tap="changeMenu">+</view>
         <view class="{{menuState ? 'ballWrap' : 'ballWrapClose'}}">
           <view @tap="goToChapters" class="ball">章节列表</view>
-          <view @tap="prev" class="{{currentChapter < 1 ? 'ballPreOff' : 'ballPreOn'}}">上一章</view>
-          <view @tap="next" class="{{currentChapter >= chapters.length - 1 ? 'ballNextOff' : 'ballNextOn'}}">下一章</view>
+          <view @tap="prev" class="{{book.currentChapter < 1 ? 'ballPreOff' : 'ballPreOn'}}">上一章</view>
+          <view @tap="next" class="{{book.currentChapter >= book.chapters.length - 1 ? 'ballNextOff' : 'ballNextOn'}}">下一章</view>
           <!--setting-->
           <view>
             <view @tap="open"> <view class="ball">设置</view></view>
@@ -60,30 +60,32 @@
 
 <script>
   import wepy from 'wepy'
-  import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING } from '../utils/constant'
+  import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING, STORAGE_READER, STORAGE_STORE } from '../utils/constant'
   import {getStorage, setStorage} from '../utils/storage'
-  import {getDetail} from '../utils/api'
+  import {getDetail, getChapter} from '../utils/api'
 
   export default class Reader extends wepy.page {
     config = {
       navigationBarTitleText: 'MyReader'
     }
     data = {
-      chapter: {
-        title: '第一章 陨落的天才',
-        body: '望着测验魔石碑上面闪亮得甚至有些刺眼的五个大字，少年面无表情，紧握的手掌，因为大力，而导致略微尖锐的指甲深深的刺进了掌心之中，带来一阵阵钻心的疼痛…\n“哎，这废物真是把家族的脸都给丢光了。”'
+      book: {
+        chapter: {
+          title: '',
+          body: ''
+        },
+        chapters: [],
+        chaptersContent: [],
+        currentChapter: 0,
+        currentSource: 0,
+        detail: {
+          title: ''
+        },
+        downloadPercent: 0,
+        downloadStatus: false,
+        id: '50865988d7a545903b000009',
+        source: []
       },
-      chapters: [],
-      chaptersContent: [],
-      currentChapter: 0,
-      currentSource: 0,
-      detail: {
-        title: '斗破苍穹'
-      },
-      downloadPercent: 0,
-      downloadStatus: false,
-      id: '50865988d7a545903b000009',
-      source: [],
 
       menuState: false,
       defaultMode: DEFAULT_SETTING.mode,
@@ -109,10 +111,20 @@
         })
       },
       prev: function () {
-
+        const { currentChapter } = getStorage(STORAGE_READER)
+        if (currentChapter <= 0) {
+          return
+        }
+        this.goToChapter(currentChapter - 1)
       },
       next: function () {
-
+        const { currentChapter, chapters } = getStorage(STORAGE_READER)
+        const page = currentChapter + 1
+        const chaptersLen = chapters.length
+        if (page >= chaptersLen) {
+          return
+        }
+        this.goToChapter(page)
       },
       open: function (e) {
         this.visible = true
@@ -159,16 +171,60 @@
     }
     onShow () {
       this.initSetting()
+      const bookStore = getStorage(STORAGE_READER)
+      const { currentChapter } = bookStore
+      this.goToChapter(currentChapter)
+      this.book = bookStore
     }
-
+    /**
+     * 跳转至章节内容
+     * @param payload
+     */
+    async goToChapter(nextChapter) {
+      try {
+        const { chapters, id } = getStorage(STORAGE_READER)
+        if (nextChapter > chapters.length) {
+          console.log('没有下一章啦')
+          return
+        }
+        if (nextChapter < 0) {
+          console.log('没有上一章啦')
+          return
+        }
+        setStorage(STORAGE_READER, {currentChapter: nextChapter})
+        console.log('goToChapter chapters link', nextChapter, chapters)
+        const { link } = chapters[nextChapter || 0]
+        const chapterData = await getChapter({
+          query: {
+            link: link
+          }
+        })
+        console.log('wanluo', chapterData)
+        const chapter = chapterData.data.chapter
+        if (chapter) {
+          setStorage(STORAGE_READER, {chapter: chapter})
+          wx.pageScrollTo({
+            scrollTop: 0,
+            duration: 300
+          })
+        } else {
+          console.log('章节获取失败')
+        }
+        setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
+      } catch (error) {
+        console.log(error);
+      }
+      this.book = getStorage(STORAGE_READER)
+      console.log('this.book', this.book)
+    }
     async onLoad (option) {
       console.log('option', option)
-      const res = await getDetail({
+      /*const res = await getDetail({
         query: {
           id: option.id
         }
       })
-      console.log(res)
+      console.log(res)*/
 
     }
   }

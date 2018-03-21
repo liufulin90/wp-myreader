@@ -50,7 +50,7 @@
         </view>
         <view class="last">最新章节：{{detail.lastChapter}}</view>
         <a class="read" data-id="{{detail._id}}" @tap="getReader">立即阅读</a>
-        <a class="download" data-id="{{detail._id}}" @tap="downLoad">{{detail.downloadStatus ? '离线下载' : '已下载'}}</a>
+        <a class="download" data-id="{{detail._id}}" style="display: none" @tap="downLoad">{{detail.downloadStatus ? '离线下载' : '已下载'}}</a>
       </view>
       <view wx:if="{{detail.downloadPercent > 1}}" class="progressWrap">
         <view class="progressBody">
@@ -106,12 +106,7 @@
       getReader: function(e) {
         var _id = e.currentTarget.dataset.id
         // 根据书籍id获取书源
-        var readerId = this.getSourceData(_id)
-        if (readerId) {
-          wepy.navigateTo({
-            url: '/pages/reader?id=' + readerId
-          })
-        }
+        this.getSourceData(_id)
       },
       downLoad: function(e) {
         var _id = e.currentTarget.dataset.id
@@ -120,21 +115,10 @@
         })
       }
     }
-    /**
-     * 根据书籍id获取书源
-     */
-    async getSourceData2(_id) {
-      // 根据书籍id获取书源
-//      let res = await getSource({
-//        query: {
-//          id: _id
-//        }
-//      })
-//      console.log('getSource', res)
-      this.getSourceData(_id)
-//        wepy.navigateTo({
-//          url: '/pages/reader?id=' + _id
-//        })
+    toReaderPage(id){
+      wepy.navigateTo({
+        url: '/pages/reader?id=' + id
+      })
     }
     /**
      * 获取书源
@@ -162,10 +146,12 @@
             if (book && book.detail && book.source) {
               console.log(`从书架取回《${book.detail.title}》`)
               await setStorage(STORAGE_READER, { ...book })
-              return id
+              // 阅读
+              this.toReaderPage(id)
             }
           } else {
-            return currentId
+            // 阅读
+            this.toReaderPage(currentId)
           }
         }
         const getDetailJson = await getDetail({
@@ -186,18 +172,22 @@
         console.log('@@get source', source)
         console.log(`从网络获取《${detail.title}》`)
         console.log('###save', { source: source, id: id, detail: detail })
+        // reader/clear
+        setStorage(STORAGE_READER, INIT_READER_STATE, false)
         setStorage(STORAGE_READER, { source: source, id: id, detail: detail })
         setStorage(STORAGE_STORE, {[id] : getStorage(STORAGE_READER)})
+        console.log('STORAGE_STORE', getStorage(STORAGE_STORE) )
         console.log(`阅读：${detail.title}`)
         await this.getChapterListData()
         tip.loaded()
-        return id
+
+        // 阅读
+        this.toReaderPage(id)
       } catch (error) {
         console.log(error)
         tip.loaded()
         tip.alert('好像哪里出错了')
       }
-      return null
     }
 
     /**
@@ -226,11 +216,12 @@
      */
     async getChapterListData() {
       try {
-        let { source, currentSource } = await getStorage(STORAGE_READER)
+        let { source, currentSource, id } = await getStorage(STORAGE_READER)
         //console.log('获取章节列表', currentSource, source.length, JSON.stringify(source))
         if (currentSource >= source.length) {
           console.log('走到这里说明所有书源都已经切换完了')
           await setStorage(STORAGE_READER, {currentSource: 0})
+          setStorage(STORAGE_STORE, {[id] : getStorage(STORAGE_READER)})
           await this.getChapterListData()
           return
         }
@@ -248,7 +239,8 @@
         })
         const chapters = chapterListData.data
         console.log('request chapters', chapterListData)
-        await setStorage(STORAGE_READER, {chapters: chapters.chapters})
+        setStorage(STORAGE_READER, {chapters: chapters.chapters})
+        setStorage(STORAGE_STORE, {[id] : getStorage(STORAGE_READER)})
         await this.getChapterData()
       } catch (error) {
         console.log(error)
@@ -259,12 +251,13 @@
      */
     async getChapterData() {
       try {
-        const { chapters, currentChapter, downloadStatus, chaptersContent } = await getStorage(STORAGE_READER)
+        const { chapters, currentChapter, downloadStatus, chaptersContent, id } = await getStorage(STORAGE_READER)
 
         if (downloadStatus) { // 已下载直接从本地获取
           const chapter = chaptersContent[currentChapter || 0]
           console.log(`章节: ${chapter.title}`)
           await setStorage(STORAGE_READER, {chapters: chapters})
+          setStorage(STORAGE_STORE, {[id] : getStorage(STORAGE_READER)})
           wx.pageScrollTo({
             scrollTop: 0,
             duration: 300
@@ -283,6 +276,7 @@
           if (chapter) {
             console.log(`章节: ${chapter.title}`)
             await setStorage(STORAGE_READER, {chapter: chapter})
+            setStorage(STORAGE_STORE, {[id] : getStorage(STORAGE_READER)})
             wx.pageScrollTo({
               scrollTop: 0,
               duration: 300
