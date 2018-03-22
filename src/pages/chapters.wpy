@@ -6,9 +6,9 @@
                  bindscroll="scroll"
                  scroll-into-view="{{'chatperid' + (currentChapter-2 > 0 ? currentChapter-2 : 0)}}">
       <view class="list">
-        <view class="li" wx:for="{{chapters}}" wx:key="" wx:for-index="idx" wx:for-item="item">
+        <view class="li" wx:for="{{chapters}}" wx:key="key" wx:for-index="idx" wx:for-item="item">
         <a id="{{'chatperid' + idx}}" style="{{idx === currentChapter ? 'color:#FF0000' : ''}}" data-chaphterindex="{{idx}}" @tap="goToChapter">
-        {{index === currentChapter ? '当前: ' + item.title : item.title }}
+        {{idx === currentChapter ? '当前: ' + item.title : item.title }}
         </a>
         </view>
       </view>
@@ -20,7 +20,7 @@
 </style>
 <script>
   import wepy from 'wepy'
-  import { STORAGE_READER, STORAGE_STORE } from '../utils/constant'
+  import { STORAGE_READER, STORAGE_STORE, STORAGE_SETTING } from '../utils/constant'
   import {getStorage, setStorage} from '../utils/storage'
   export default class Chapters extends wepy.page {
     config = {
@@ -30,7 +30,7 @@
     components = {
     }
     data = {
-      currentChapter: 3,
+      currentChapter: 0,
       chapters: [
 //        {
 //          currency: 0,
@@ -57,14 +57,16 @@
         setStorage(STORAGE_READER, {currentChapter: chaphterindex})
         setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
         // 这里先往store里面存东西，然后再回退
+        setStorage(STORAGE_SETTING, {fromChapter: true})
         wepy.navigateBack({
           delta: 1
         })
       }
     }
     onLoad() {
-      var {chapters} = getStorage(STORAGE_READER)
+      var {chapters, currentChapter} = getStorage(STORAGE_READER)
       this.chapters = chapters
+      this.currentChapter = currentChapter
     }
   }
 </script>

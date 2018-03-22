@@ -13,7 +13,7 @@
           </view>
           </view>
         </view>
-        <view class="content" @tap="close" style="font-size:{{fontSize}}px">
+        <view id="contentBody" class="content" @tap="close" style="font-size:{{fontSize}}px">
           <view class="p">
             {{book.chapter.body}}
           </view>
@@ -169,12 +169,18 @@
       this.color = settings.color
       this.fontSize = settings.fontSize
     }
-    onShow () {
-      this.initSetting()
+    onShow (option) {
+      console.log('reader onShow option', option)
+      let settings = getStorage(STORAGE_SETTING)
       const bookStore = getStorage(STORAGE_READER)
-      const { currentChapter } = bookStore
-      this.goToChapter(currentChapter)
-      this.book = bookStore
+      if (settings.fromChapter) {
+        console.log('settings.fromChapter', settings.fromChapter)
+        setStorage(STORAGE_SETTING, {fromChapter: false})
+        const { currentChapter } = bookStore
+        this.goToChapter(currentChapter)
+      } else {
+        this.book = bookStore
+      }
     }
     /**
      * 跳转至章节内容
@@ -182,6 +188,7 @@
      */
     async goToChapter(nextChapter) {
       try {
+        var that = this
         const { chapters, id } = getStorage(STORAGE_READER)
         if (nextChapter > chapters.length) {
           console.log('没有下一章啦')
@@ -191,7 +198,7 @@
           console.log('没有上一章啦')
           return
         }
-        setStorage(STORAGE_READER, {currentChapter: nextChapter})
+        await setStorage(STORAGE_READER, {currentChapter: nextChapter})
         console.log('goToChapter chapters link', nextChapter, chapters)
         const { link } = chapters[nextChapter || 0]
         const chapterData = await getChapter({
@@ -199,10 +206,10 @@
             link: link
           }
         })
-        console.log('wanluo', chapterData)
+        console.log('网络中得到章节内容', chapterData)
         const chapter = chapterData.data.chapter
         if (chapter) {
-          setStorage(STORAGE_READER, {chapter: chapter})
+          await setStorage(STORAGE_READER, {chapter: chapter})
           wx.pageScrollTo({
             scrollTop: 0,
             duration: 300
@@ -210,15 +217,15 @@
         } else {
           console.log('章节获取失败')
         }
-        setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
+        await setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
       } catch (error) {
-        console.log(error);
+        console.log(error)
       }
-      this.book = getStorage(STORAGE_READER)
-      console.log('this.book', this.book)
+      that.book = getStorage(STORAGE_READER)
+      console.log('get chapter end', that.book)
     }
     async onLoad (option) {
-      console.log('option', option)
+      this.initSetting()
       /*const res = await getDetail({
         query: {
           id: option.id
