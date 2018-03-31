@@ -5,7 +5,7 @@
         MyReader
         <navigator open-type="navigate" url="/pages/search?code={{item.code}}" >
           <view class="search">
-            <image class="icon" src="SearchIcon" alt=""></image>
+            <image class="icon" src="../icons/search.svg" alt=""></image>
             Search
           </view>
         </navigator>

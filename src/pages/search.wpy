@@ -31,7 +31,7 @@
 <script>
   import wepy from 'wepy'
   import {searchBook} from '../utils/api'
-  import {getStorage, setStorage} from '../utils/storage'
+  import {getStorage} from '../utils/storage'
   import { API_HOST, STORAGE_STORE } from '../utils/constant'
 
   export default class Search extends wepy.page {

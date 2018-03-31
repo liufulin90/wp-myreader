@@ -12,8 +12,9 @@
 </style>
 <script>
   import wepy from 'wepy'
-  import { API_HOST, STORAGE_STORE, STORAGE_READER } from '../utils/constant'
+  import { API_HOST, STORAGE_STORE, STORAGE_READER, STORAGE_SETTING } from '../utils/constant'
   import {getStorage, setStorage} from '../utils/storage'
+  import {changeBook2Store} from '../utils/functions'
   export default class BookItem extends wepy.component {
     props = {
       list: {}
@@ -62,8 +63,9 @@
     }
 
     ontap(_id) {
-      var bookStore = getStorage(STORAGE_STORE)
-      setStorage(STORAGE_READER, bookStore[_id])
+      setStorage(STORAGE_SETTING, {fromChapter: true})
+      // 交换书籍
+      changeBook2Store(_id)
       wepy.navigateTo({
         url: '/pages/reader?id=' + _id
       })
@@ -79,7 +81,6 @@
         cancelText: '朕点错了',
         success: function(res) {
           if (res.confirm) {
-            console.log('用户点击确定')
             var bookStore = getStorage(STORAGE_STORE)
             delete bookStore[_id]
             setStorage(STORAGE_STORE, bookStore, false)
@@ -87,7 +88,6 @@
             that.$parent.list = Object.values(bookStore)
             that.$parent.$apply()
           } else if (res.cancel) {
-            console.log('用户点击取消')
           }
         }
       })

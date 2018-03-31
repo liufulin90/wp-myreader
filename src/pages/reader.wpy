@@ -2,7 +2,7 @@
   <view class="reader" style="{{(color.background ? 'background:' + color.background + ';' : '') + (color.color ? 'color:' + color.color + ';' : '')}}">
     <view wx:if="chapter.title">
       <view style="min-height: 100vh" @tap="close">
-        <view class="head" style="{{(color.background ? 'background:' + color.background + ';' : '') + (color.color ? 'color:' + color.color + ';' : '')}}">
+        <view class="head" style="{{(color.background ? 'background:' + color.background + ';' : '') + (color.color ? 'color:' + color.color + ';' : '') + (headPosition ? 'position:absolute;' : 'position:fixed;')}}">
           <view class="info">
             <view class="h3">{{book.detail.title}}</view>
             <view class="p">{{book.chapter.title}}</view>
@@ -62,7 +62,7 @@
   import wepy from 'wepy'
   import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING, STORAGE_READER, STORAGE_STORE } from '../utils/constant'
   import {getStorage, setStorage} from '../utils/storage'
-  import {getDetail, getChapter} from '../utils/api'
+  import {getChapter} from '../utils/api'
 
   export default class Reader extends wepy.page {
     config = {
@@ -87,6 +87,8 @@
         source: []
       },
 
+      scrollTop: 0,
+      headPosition: true,
       menuState: false,
       defaultMode: DEFAULT_SETTING.mode,
       defaultColor: DEFAULT_SETTING.color,
@@ -170,23 +172,22 @@
       this.fontSize = settings.fontSize
     }
     onShow (option) {
-      console.log('reader onShow option', option)
       let settings = getStorage(STORAGE_SETTING)
-      const bookStore = getStorage(STORAGE_READER)
+      const readerStore = getStorage(STORAGE_READER)
       if (settings.fromChapter) {
         console.log('settings.fromChapter', settings.fromChapter)
         setStorage(STORAGE_SETTING, {fromChapter: false})
-        const { currentChapter } = bookStore
+        const { currentChapter } = readerStore
         this.goToChapter(currentChapter)
       } else {
-        this.book = bookStore
+        this.book = readerStore
       }
     }
     /**
      * 跳转至章节内容
      * @param payload
      */
-    async goToChapter(nextChapter) {
+    goToChapter(nextChapter) {
       try {
         var that = this
         const { chapters, id } = getStorage(STORAGE_READER)
@@ -198,41 +199,53 @@
           console.log('没有上一章啦')
           return
         }
-        await setStorage(STORAGE_READER, {currentChapter: nextChapter})
-        console.log('goToChapter chapters link', nextChapter, chapters)
+        setStorage(STORAGE_READER, {currentChapter: nextChapter})
         const { link } = chapters[nextChapter || 0]
-        const chapterData = await getChapter({
+        getChapter({
           query: {
             link: link
           }
-        })
-        console.log('网络中得到章节内容', chapterData)
-        const chapter = chapterData.data.chapter
-        if (chapter) {
-          await setStorage(STORAGE_READER, {chapter: chapter})
-          wx.pageScrollTo({
-            scrollTop: 0,
-            duration: 300
+        }).then((res) => {
+          console.log('网络中得到章节内容', res)
+          const chapter = res.data.chapter
+          if (chapter) {
+            setStorage(STORAGE_READER, {chapter: chapter})
+          } else {
+            wepy.showToast({
+              title: '嗯哼，没有获取到章节内容呀！',
+              icon: 'none',
+              duration: 2000
+            })
+          }
+          var reader = getStorage(STORAGE_READER)
+          // setStorage(STORAGE_STORE, {[id]: reader})
+          that.setData({
+            book: reader
           })
-        } else {
-          console.log('章节获取失败')
-        }
-        await setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
+          that.book = reader
+        }).catch(() => {
+          wepy.showToast({
+            title: '哎哟，网络不给力呢！',
+            icon: 'none',
+            duration: 2000
+          })
+        })
       } catch (error) {
         console.log(error)
       }
-      that.book = getStorage(STORAGE_READER)
       console.log('get chapter end', that.book)
     }
     async onLoad (option) {
       this.initSetting()
-      /*const res = await getDetail({
-        query: {
-          id: option.id
-        }
+    }
+    onPageScroll(res) {
+      var headPosition = this.scrollTop > res.scrollTop ? false : true
+      this.setData({
+        headPosition: headPosition,
+        scrollTop: res.scrollTop
       })
-      console.log(res)*/
-
+      this.headPosition = headPosition
+      this.scrollTop = res.scrollTop
     }
   }
 </script>

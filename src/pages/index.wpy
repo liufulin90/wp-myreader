@@ -13,7 +13,7 @@
   import wepy from 'wepy'
   import BookItem from '../components/bookitem'
   import CurrentBook from '../components/currentbook'
-  import {getStorage, setStorage} from '../utils/storage'
+  import {getStorage} from '../utils/storage'
   import { STORAGE_STORE, STORAGE_READER } from '../utils/constant'
 
   export default class Index extends wepy.page {
@@ -29,30 +29,14 @@
     data = {
       current: {
         cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-        lastChapter: 12,
+        lastChapter: '番外第一章 五帝破空',
         title: '斗破苍穹',
         author: '天蚕土豆',
-        wordCount: 12333,
-        latelyFollower: 333,
+        wordCount: '541万',
+        latelyFollower: '7万',
         _id: '50865988d7a545903b000009'
       },
-      list: [
-//        {
-//          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-//          title: '斗破苍穹1',
-//          _id: '50865988d7a545903b000009'
-//        },
-//        {
-//          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-//          title: '斗破苍穹2',
-//          _id: '50865988d7a545903b000009'
-//        },
-//        {
-//          cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-//          title: '斗破苍穹3',
-//          _id: '50865988d7a545903b000009'
-//        }
-      ]
+      list: []
     }
 
     computed = {
