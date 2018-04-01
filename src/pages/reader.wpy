@@ -60,7 +60,7 @@
 
 <script>
   import wepy from 'wepy'
-  import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING, STORAGE_READER, STORAGE_STORE } from '../utils/constant'
+  import { COLORS, MODE_COLOR, STORAGE_SETTING, DEFAULT_SETTING, STORAGE_READER } from '../utils/constant'
   import {getStorage, setStorage} from '../utils/storage'
   import {getChapter} from '../utils/api'
 
@@ -175,7 +175,7 @@
       let settings = getStorage(STORAGE_SETTING)
       const readerStore = getStorage(STORAGE_READER)
       if (settings.fromChapter) {
-        console.log('settings.fromChapter', settings.fromChapter)
+//        console.log('settings.fromChapter', settings.fromChapter)
         setStorage(STORAGE_SETTING, {fromChapter: false})
         const { currentChapter } = readerStore
         this.goToChapter(currentChapter)
@@ -190,13 +190,13 @@
     goToChapter(nextChapter) {
       try {
         var that = this
-        const { chapters, id } = getStorage(STORAGE_READER)
+        const { chapters } = getStorage(STORAGE_READER)
         if (nextChapter > chapters.length) {
-          console.log('没有下一章啦')
+//          console.log('没有下一章啦')
           return
         }
         if (nextChapter < 0) {
-          console.log('没有上一章啦')
+//          console.log('没有上一章啦')
           return
         }
         setStorage(STORAGE_READER, {currentChapter: nextChapter})
@@ -206,7 +206,7 @@
             link: link
           }
         }).then((res) => {
-          console.log('网络中得到章节内容', res)
+//          console.log('网络中得到章节内容', res)
           const chapter = res.data.chapter
           if (chapter) {
             setStorage(STORAGE_READER, {chapter: chapter})
@@ -233,7 +233,6 @@
       } catch (error) {
         console.log(error)
       }
-      console.log('get chapter end', that.book)
     }
     async onLoad (option) {
       this.initSetting()

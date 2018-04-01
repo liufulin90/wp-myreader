@@ -37,9 +37,8 @@
       apiHost: API_HOST
     }
     methods = {
-      toReader: function (){
+      toReader: function () {
         var _id = this.current._id
-        console.log(this.current)
         var bookStore = getStorage(STORAGE_STORE)
         if (bookStore && bookStore[_id]) {
           // 已经在本地有阅读过，直接跳转到阅读器

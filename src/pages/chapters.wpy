@@ -51,8 +51,7 @@
       },
       goToChapter: function(e) {
         var chaphterindex = e.currentTarget.dataset.chaphterindex
-        console.log(chaphterindex)
-        const { chapters, id } = getStorage(STORAGE_READER)
+        const { id } = getStorage(STORAGE_READER)
         setStorage(STORAGE_READER, {currentChapter: chaphterindex})
         setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
         // 这里先往store里面存东西，然后再回退

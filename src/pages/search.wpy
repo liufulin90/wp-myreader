@@ -47,7 +47,7 @@
             keyword: value
           }
         }).then((res) => {
-          res.data.books.forEach(function(item){
+          res.data.books.forEach(function(item) {
             item.wordCount = item.wordCount > 10000 ? parseInt(item.wordCount / 10000) + '万' : item.wordCount
             item.latelyFollower = item.latelyFollower > 10000 ? parseInt(item.latelyFollower / 10000) + '万' : item.latelyFollower
             return item

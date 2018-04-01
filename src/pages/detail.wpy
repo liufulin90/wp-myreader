@@ -128,7 +128,6 @@
     async getSourceData(_id) {
       try {
         const id = _id
-        console.log('id', id)
         // 这里获得整个缓存中的store，并对应上reader的store。其reader的store结构参考store/reducer/reader.js initState
         const readerStorage = await getStorage(STORAGE_READER)
         const currentId = readerStorage && readerStorage.id
@@ -146,7 +145,6 @@
           loading: true
         })
         const detail = getDetailJson.data
-        console.log('@@getdetail', detail)
         const getSourceJson = await getSource({
           query: {
             id: id
@@ -154,8 +152,7 @@
           loading: true
         })
         const source = getSourceJson.data
-        console.log(`从网络获取《${detail.title}》`)
-        console.log('###save', { source: source, id: id, detail: detail })
+//        console.log(`从网络获取《${detail.title}》`)
         // 新书籍
         var newBook = INIT_READER_STATE
         newBook.source = source
@@ -185,9 +182,9 @@
         const readerStorage = await getStorage(STORAGE_READER)
         const { source, currentSource } = readerStorage
         let nextSource = (currentSource || 1) + 1
-        console.log(`开始第${nextSource}个书源`)
+//        console.log(`开始第${nextSource}个书源`)
         if (nextSource >= source.length) {
-          console.log('没有可用书源,切换回优质书源')
+//          console.log('没有可用书源,切换回优质书源')
           nextSource = 0
         }
         await setStorage(STORAGE_READER, {currentSource: nextSource})
@@ -204,7 +201,7 @@
         let { source, currentSource, id } = await getStorage(STORAGE_READER)
         // console.log('获取章节列表', currentSource, source.length, JSON.stringify(source))
         if (currentSource >= source.length) {
-          console.log('走到这里说明所有书源都已经切换完了')
+//          console.log('走到这里说明所有书源都已经切换完了')
           await setStorage(STORAGE_READER, {currentSource: 0})
           setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
           await this.getChapterListData()
@@ -213,7 +210,7 @@
         let sourceData = source[currentSource || 0]
         const _id = sourceData._id
         const name = sourceData.name || '未知来源'
-        console.log(`书源: ${name}`)
+//        console.log(`书源: ${name}`)
         const chapterListData = await getChapterList({
           query: {
             id: _id
@@ -221,7 +218,7 @@
           loading: true
         })
         const chapters = chapterListData.data
-        console.log('request chapters', chapterListData)
+//        console.log('request chapters', chapterListData)
         setStorage(STORAGE_READER, {chapters: chapters.chapters})
         // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
         await this.getChapterData()
@@ -234,11 +231,11 @@
      */
     async getChapterData() {
       try {
-        let { chapters, currentChapter, downloadStatus, chaptersContent, id } = await getStorage(STORAGE_READER)
+        let { chapters, currentChapter, downloadStatus, chaptersContent } = await getStorage(STORAGE_READER)
         currentChapter = currentChapter > chapters.length ? 0 : currentChapter
         if (downloadStatus) { // 已下载直接从本地获取
-          const chapter = chaptersContent[currentChapter || 0]
-          console.log(`已下载直接从本地获取,章节: ${chapter.title}`)
+//          const chapter = chaptersContent[currentChapter || 0]
+//          console.log(`已下载直接从本地获取,章节: ${chapter.title}`)
           setStorage(STORAGE_READER, {chapters: chapters, currentChapter: currentChapter})
           // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
           wx.pageScrollTo({
@@ -246,7 +243,7 @@
             duration: 300
           })
         } else {
-          console.log('chapters link', chapters)
+//          console.log('chapters link', chapters)
           const { link } = chapters[0]
           const chapterData = await getChapter({
             query: {
@@ -255,7 +252,7 @@
             loading: true
           })
           const chapter = chapterData.data.chapter
-          console.log('chapter 章节', chapter)
+//          console.log('chapter 章节', chapter)
           if (chapter) {
             setStorage(STORAGE_READER, {chapter: chapter, currentChapter: currentChapter})
             // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
@@ -264,7 +261,7 @@
               duration: 300
             })
           } else {
-            console.log('章节获取失败')
+//            console.log('章节获取失败')
             await this.getNextSource()
           }
         }

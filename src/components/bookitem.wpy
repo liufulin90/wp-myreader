@@ -35,16 +35,13 @@
         var title = e.currentTarget.dataset.title
         that.timeout = setTimeout(() => {
           that.pressed = true
-          console.log('touchStart setTimeout s')
           this.press(_id, title)
         }, 500)
         return false
       },
       touchEnd: function (e) {
-        console.log('touchEnd s')
         var that = this
         var _id = e.currentTarget.dataset.id
-//        var title = e.currentTarget.dataset.title
         clearTimeout(that.timeout)
         if (that.pressed) {
           that.pressed = false
@@ -96,5 +93,4 @@
     onLoad () {
     }
   }
-
 </script>

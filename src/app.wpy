@@ -70,7 +70,7 @@ export default class extends wepy.app {
   }
 
   onLaunch() {
-    this.testAsync()
+    // this.testAsync()
     // 启动时初始化阅读器设置
     let settings = getStorage(STORAGE_SETTING)
     if (!settings) {
