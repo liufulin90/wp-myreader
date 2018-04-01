@@ -21,9 +21,7 @@ export default class extends wepy.app {
       'pages/reader',
       'pages/chapters',
       'pages/search',
-      'pages/detail',
-      'pages/index2',
-      'pages/home'
+      'pages/detail'
     ],
     window: {
       backgroundTextStyle: 'light',
