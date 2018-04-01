@@ -6,6 +6,7 @@
   <view class="container">
     <currentbook :current.sync="current"></currentbook>
     <bookitem :list.sync="list"></bookitem>
+    <view class="tip">{{list.length === 0 ? '书架空空如也，点右上角找书哦~' : '点击右上角按钮添加书籍'}}{{list.length >= 6 && ', 长按可删除书籍~'}}</view>
   </view>
 </template>
 
@@ -63,8 +64,12 @@
       }
 
       var bookStore = getStorage(STORAGE_STORE)
-      this.list = Object.values(bookStore)
-      console.log('bookStore', this.list)
+      var storeArr = Object.values(bookStore)
+//      console.log('bookStore', storeArr)
+      storeArr.forEach((item) => {
+        delete item.chapters
+      })
+      this.list = storeArr
     }
   }
 </script>

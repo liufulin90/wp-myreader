@@ -6,6 +6,7 @@
         <p>{{item.detail.title}}</p>
       </view>
     </repeat>
+    <view class="book" wx:if="{{(list.length % 3) === 2}}"></view>
   </view>
 </template>
 <style lang="less">

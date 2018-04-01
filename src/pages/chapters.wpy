@@ -3,7 +3,6 @@
     <scroll-view scroll-y style="height: 100vh;"
                  bindscrolltoupper="upper"
                  bindscrolltolower="lower"
-                 bindscroll="scroll"
                  scroll-into-view="{{'chatperid' + (currentChapter-2 > 0 ? currentChapter-2 : 0)}}">
       <view class="list">
         <view class="li" wx:for="{{chapters}}" wx:key="key" wx:for-index="idx" wx:for-item="item">
