@@ -1,10 +1,14 @@
 <template>
   <view>
+    <view class="body-view">
+      <slider bindchanging="sliderChange" min="0" max="{{chapters.length}}" step="1" activeColor="#ff5722" value="{{currentChapter}}"/>
+    </view>
     <scroll-view scroll-y style="height: 100vh;"
                  bindscrolltoupper="upper"
                  bindscrolltolower="lower"
-                 scroll-into-view="{{'chatperid' + (currentChapter-2 > 0 ? currentChapter-2 : 0)}}">
+                 scroll-into-view="{{'chatperid' + (intoView-2 > 0 ? intoView-2 : 'init')}}">
       <view class="list">
+        <view class="li" id="chatperidinit" style="height: 22px"></view>
         <view class="li" wx:for="{{chapters}}" wx:key="key" wx:for-index="idx" wx:for-item="item">
         <a id="{{'chatperid' + idx}}" style="{{idx === currentChapter ? 'color:#FF0000' : ''}}" data-chaphterindex="{{idx}}" @tap="goToChapter">
         {{idx === currentChapter ? '当前: ' + item.title : item.title }}
@@ -19,7 +23,7 @@
 </style>
 <script>
   import wepy from 'wepy'
-  import { STORAGE_READER, STORAGE_STORE, STORAGE_SETTING } from '../utils/constant'
+  import { STORAGE_READER, STORAGE_SETTING } from '../utils/constant'
   import {getStorage, setStorage} from '../utils/storage'
   export default class Chapters extends wepy.page {
     config = {
@@ -30,18 +34,8 @@
     }
     data = {
       currentChapter: 0,
-      chapters: [
-//        {
-//          currency: 0,
-//          isVip: false,
-//          link: 'http://www.xiaoxiaoshuwu.com/shtml/0/306/7262430.shtml',
-//          order: 0,
-//          partsize: 0,
-//          title: '封推感言',
-//          totalpage: 0,
-//          unreadble: false
-//        }
-      ]
+      intoView: 0,
+      chapters: []
     }
     methods = {
       back: function () {
@@ -51,20 +45,29 @@
       },
       goToChapter: function(e) {
         var chaphterindex = e.currentTarget.dataset.chaphterindex
-        const { id } = getStorage(STORAGE_READER)
         setStorage(STORAGE_READER, {currentChapter: chaphterindex})
-        setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
+        // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
         // 这里先往store里面存东西，然后再回退
         setStorage(STORAGE_SETTING, {fromChapter: true})
         wepy.navigateBack({
           delta: 1
         })
+      },
+      sliderChange: function(event) {
+        var val = event.detail.value
+        val = val - 3 > 0 ? val - 3 : 'init'
+        this.setData({
+          intoView: val
+        })
+        this.intoView = val
+        console.log(val)
       }
     }
     onLoad() {
       var {chapters, currentChapter} = getStorage(STORAGE_READER)
       this.chapters = chapters
       this.currentChapter = currentChapter
+      this.intoView = currentChapter
     }
   }
 </script>

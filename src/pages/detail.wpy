@@ -203,7 +203,7 @@
         if (currentSource >= source.length) {
 //          console.log('走到这里说明所有书源都已经切换完了')
           await setStorage(STORAGE_READER, {currentSource: 0})
-          setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
+          // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
           await this.getChapterListData()
           return
         }
@@ -254,7 +254,7 @@
           const chapter = chapterData.data.chapter
 //          console.log('chapter 章节', chapter)
           if (chapter) {
-            setStorage(STORAGE_READER, {chapter: chapter, currentChapter: currentChapter})
+            setStorage(STORAGE_READER, {chapter: chapter, currentChapter: 0})
             // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
             wx.pageScrollTo({
               scrollTop: 0,

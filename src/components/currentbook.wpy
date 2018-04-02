@@ -39,10 +39,9 @@
     methods = {
       toReader: function () {
         var _id = this.current._id
-        var bookStore = getStorage(STORAGE_STORE)
-        if (bookStore && bookStore[_id]) {
+        var readerStore = getStorage(STORAGE_READER)
+        if (readerStore && readerStore.id && readerStore.id === _id) {
           // 已经在本地有阅读过，直接跳转到阅读器
-          setStorage(STORAGE_READER, bookStore[_id])
           wepy.navigateTo({
             url: '/pages/reader?id=' + _id
           })

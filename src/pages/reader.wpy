@@ -210,6 +210,16 @@
           const chapter = res.data.chapter
           if (chapter) {
             setStorage(STORAGE_READER, {chapter: chapter})
+            var reader = getStorage(STORAGE_READER)
+            // setStorage(STORAGE_STORE, {[id]: reader})
+            that.setData({
+              book: reader
+            })
+            that.book = reader
+            wx.pageScrollTo({
+              scrollTop: 0,
+              duration: 300
+            })
           } else {
             wepy.showToast({
               title: '嗯哼，没有获取到章节内容呀！',
@@ -217,12 +227,6 @@
               duration: 2000
             })
           }
-          var reader = getStorage(STORAGE_READER)
-          // setStorage(STORAGE_STORE, {[id]: reader})
-          that.setData({
-            book: reader
-          })
-          that.book = reader
         }).catch(() => {
           wepy.showToast({
             title: '哎哟，网络不给力呢！',
@@ -239,10 +243,10 @@
     }
     onPageScroll(res) {
       var headPosition = this.scrollTop > res.scrollTop ? false : true
-      this.setData({
-        headPosition: headPosition,
-        scrollTop: res.scrollTop
-      })
+//      this.setData({
+//        headPosition: headPosition,
+//        scrollTop: res.scrollTop
+//      })
       this.headPosition = headPosition
       this.scrollTop = res.scrollTop
     }

@@ -29,13 +29,13 @@
 
     data = {
       current: {
-        cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F41615%2F_41615_067553.jpg',
-        lastChapter: '番外第一章 五帝破空',
-        title: '斗破苍穹',
-        author: '天蚕土豆',
-        wordCount: '541万',
-        latelyFollower: '7万',
-        _id: '50865988d7a545903b000009'
+        cover: '/agent/http%3A%2F%2Fimg.1391.com%2Fapi%2Fv1%2Fbookcenter%2Fcover%2F1%2F53598%2F_53598_122310.jpg',
+        lastChapter: '第174章 荐杜预老将献新谋降孙皓三分归一统(2)',
+        title: '三国演义',
+        author: '罗贯中',
+        wordCount: '59万',
+        latelyFollower: '1786',
+        _id: '51c162ba53e597de280001f9'
       },
       list: []
     }
@@ -57,7 +57,7 @@
     }
     onShow() {
       var readerStore = getStorage(STORAGE_READER)
-      if (readerStore && readerStore.detail) {
+      if (readerStore && readerStore.id && readerStore.detail) {
         this.current = readerStore.detail
         this.current.wordCount = this.current.wordCount > 10000 ? parseInt(this.current.wordCount / 10000) + '万' : this.current.wordCount
         this.current.latelyFollower = this.current.latelyFollower > 10000 ? parseInt(this.current.latelyFollower / 10000) + '万' : this.current.latelyFollower

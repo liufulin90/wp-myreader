@@ -13,7 +13,7 @@
 </style>
 <script>
   import wepy from 'wepy'
-  import { API_HOST, STORAGE_STORE, STORAGE_READER, STORAGE_SETTING } from '../utils/constant'
+  import { API_HOST, STORAGE_STORE, STORAGE_SETTING } from '../utils/constant'
   import {getStorage, setStorage} from '../utils/storage'
   import {changeBook2Store} from '../utils/functions'
   export default class BookItem extends wepy.component {
