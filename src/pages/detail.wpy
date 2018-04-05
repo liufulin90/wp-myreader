@@ -73,7 +73,7 @@
   import {changeBook2Store} from '../utils/functions'
   export default class Detail extends wepy.page {
     config = {
-      navigationBarTitleText: 'MyReader'
+      navigationBarTitleText: 'GReader'
     }
 
     components = {
@@ -238,7 +238,7 @@
 //          console.log(`已下载直接从本地获取,章节: ${chapter.title}`)
           setStorage(STORAGE_READER, {chapters: chapters, currentChapter: currentChapter})
           // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
-          wx.pageScrollTo({
+          wepy.pageScrollTo({
             scrollTop: 0,
             duration: 300
           })
@@ -256,7 +256,7 @@
           if (chapter) {
             setStorage(STORAGE_READER, {chapter: chapter, currentChapter: 0})
             // setStorage(STORAGE_STORE, {[id]: getStorage(STORAGE_READER)})
-            wx.pageScrollTo({
+            wepy.pageScrollTo({
               scrollTop: 0,
               duration: 300
             })

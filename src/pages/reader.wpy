@@ -48,9 +48,6 @@
         </view>
       </view>
     </view>
-    <view class="loading" wx:else>
-      <image class="img" src="{{imgage}}" alt="loading"></image>
-    </view>
   </view>
 </template>
 
@@ -66,7 +63,7 @@
 
   export default class Reader extends wepy.page {
     config = {
-      navigationBarTitleText: 'MyReader'
+      navigationBarTitleText: 'GReader'
     }
     data = {
       book: {
@@ -216,7 +213,7 @@
               book: reader
             })
             that.book = reader
-            wx.pageScrollTo({
+            wepy.pageScrollTo({
               scrollTop: 0,
               duration: 300
             })

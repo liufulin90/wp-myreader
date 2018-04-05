@@ -27,7 +27,7 @@
   import {getStorage, setStorage} from '../utils/storage'
   export default class Chapters extends wepy.page {
     config = {
-      navigationBarTitleText: 'MyReader'
+      navigationBarTitleText: 'GReader'
     }
 
     components = {

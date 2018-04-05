@@ -36,7 +36,7 @@
 
   export default class Search extends wepy.page {
     config = {
-      navigationBarTitleText: 'MyReader'
+      navigationBarTitleText: 'GReader'
     }
     methods = {
       formSubmit: function(e) {
