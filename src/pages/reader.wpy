@@ -23,7 +23,7 @@
       <view class="fixedMenu">
         <view class="{{menuState ? 'btnMain' : 'btnMainClose'}}" @tap="changeMenu">+</view>
         <view class="{{menuState ? 'ballWrap' : 'ballWrapClose'}}">
-          <view @tap="goToChapters" class="ball">章节列表</view>
+          <view @tap="goToChapters" class="ball">章节<br/>列表</view>
           <view @tap="prev" class="{{book.currentChapter < 1 ? 'ballPreOff' : 'ballPreOn'}}">上一章</view>
           <view @tap="next" class="{{book.currentChapter >= book.chapters.length - 1 ? 'ballNextOff' : 'ballNextOn'}}">下一章</view>
           <!--setting-->
